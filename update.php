@@ -1,4 +1,5 @@
 <?php
+include_once "./auth/config.php";
 $conn = mysqli_connect("localhost", "root", "", "berwashop");
 
 $code = $_GET['ProductCode'];

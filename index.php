@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/index.css">
@@ -63,59 +63,33 @@
         .container {
             padding: 2rem;
             margin-top: 50px;
+            width: 100%;
         }
 
-        .dashboard {
+        .admin-section {
             display: flex;
             flex-wrap: wrap;
-            /* Allow cards to wrap on smaller screens */
-            justify-content: space-between;
+            gap: 1rem;
         }
 
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .card {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: calc(33% - 1rem);
-            /* Calculate width based on 3 columns */
-            margin-bottom: 1rem;
+        .admin-card {
+            flex: 1;
+            min-width: 200px;
             padding: 1rem;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
-        .card-header {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #ddd;
+        .admin-card h5 {
+            margin-bottom: 1rem;
+            color: #1f2937;
         }
 
-        .card-header h2 {
-            margin-bottom: 0;
-            font-size: 1rem;
-        }
-
-        .card-body {
-            padding: 1rem;
-        }
-
-        .card-body ul {
-            list-style: none;
-            padding: 0;
+        .admin-card p {
             margin: 0;
-        }
-
-        .card-body li {
-            margin-bottom: 0.5rem;
-        }
-
-        .chart-placeholder {
-            /* Placeholder for your chart library styles */
-            height: 100px;
-            background-color: #eee;
+            color: #4b5563;
         }
     </style>
 </head>
@@ -138,37 +112,37 @@
         </div>
     </nav>
     <section class="container">
-        <div class="dashboard">
-            <div class="card">
-                <h2>Welcome to the Admin Dashboard</h2>
-                <p>Manage your products and orders with ease.</p>
+        <div class="admin-section">
+            <div class="admin-card">
+                <h5>Total Products</h5>
+                <p>2450</p>
             </div>
-            <div class="card">
-                <h2>Total Products</h2>
-                <p class="number">245</p>
+            <div class="admin-card">
+                <h5>Total Orders</h5>
+                <p>1500</p>
             </div>
-            <div class="card">
-                <h2>Total Orders</h2>
-                <p class="number">127</p>
+            <div class="admin-card">
+                <h5>Revenue</h5>
+                <p>$12,540</p>
             </div>
-            <div class="card">
-                <h2>Revenue</h2>
-                <p class="number">$12,540</p>
+            <div class="admin-card">
+                <h5>New Users</h5>
+                <p>1500</p>
             </div>
-            <div class="card">
-                <h2>New Users</h2>
-                <p class="number">15</p>
+            <div class="admin-card">
+                <h5>Pending Approvals</h5>
+                <p>3000</p>
             </div>
-            <div class="card">
-                <h2>Pending Approvals</h2>
-                <p class="number">3</p>
-            </div>
-            <div class="card">
-                <h2>Messages</h2>
-                <p class="number">7</p>
+            <div class="admin-card">
+                <h5>Messages</h5>
+                <p>750</p>
             </div>
         </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2LcX9hYj6Dew/3Cqu5d5GEn5e2snJp4YLnf2gyR6E7" crossorigin="anonymous">
+        </script>
 </body>
 
 </html>

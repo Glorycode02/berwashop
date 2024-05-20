@@ -1,4 +1,5 @@
 <?php
+include_once "./auth/config.php";
 $conn = mysqli_connect("localhost", "root", "", "berwashop");
 
 $select = mysqli_query($conn, "SELECT * FROM product");
@@ -13,210 +14,125 @@ if ($select) {
         while ($fetch = mysqli_fetch_assoc($select)) {
             $tbody .= "<tr>
             <td>" . $a++ . "</td>
-            <td>" . $fetch["ProductName"] . "</td>
-            <td class='text-align:center;'>
-            <a href='update.php?ProductCode=" . $fetch['ProductCode'] . "' class='update'>Update</a>
-            <a href='delete.php?ProductCode=" . $fetch['ProductCode'] . "' class='delete'>Delete</a</a>
-            <a href='import.php?ProductCode=" . $fetch['ProductCode'] . "' class='import'>Import</a</a>
+            <td>" . htmlspecialchars($fetch["ProductName"]) . "</td>
+            <td class='text-center'>
+            <a href='update.php?ProductCode=" . $fetch['ProductCode'] . "' class='btn btn-warning btn-sm'>Update</a>
+            <a href='delete.php?ProductCode=" . $fetch['ProductCode'] . "' class='btn btn-danger btn-sm'>Delete</a>
+            <a href='import.php?ProductCode=" . $fetch['ProductCode'] . "' class='btn btn-primary btn-sm'>Import</a>
             </td>
-        </tr></br>";
+        </tr>";
         }
     } else {
-        $tbody .= '<tr><td colspan="3" style="text-align:center; font-weight:bold;">No Products found</td></tr>';
+        $tbody .= '<tr><td colspan="3" class="text-center font-weight-bold">No Products found</td></tr>';
     }
 } else {
     echo "Not selected";
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
-    <title>Home</title>
+    <title>Admin Dashboard - Products</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/products.css">
     <style>
-        .container {
-            width: 100%;
-            padding: 2rem;
-        }
-
-        .admin-info {
-            background-color: #ffffff;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            border-radius: 0.5rem;
-            margin-top: 2rem;
-        }
-
-        .admin-info h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #333;
-        }
-
-        .admin-info p {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            color: #555;
-        }
-
-        .card {
-            background-color: #ffffff;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            border-radius: 0.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 1.5rem;
-            color: #333;
-        }
-
-        .card p {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            color: #555;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+        body {
+            background-color: #f8f9fa;
         }
 
         .navbar {
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    padding: 8px;
-}
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
 
-.navbar-inner {
-    width: 60rem;
-    margin: 0 auto;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-}
+        .navbar-inner {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
 
-.logo {
-    display: flex;
-    align-items: center;
-}
+        .logo-text {
+            font-weight: 600;
+            color: #1f2937;
+        }
 
-.logo-text {
-    font-weight: 600;
-    color: #1f2937;
-    margin-left: 0.5rem;
-}
+        .primary-nav a,
+        .secondary-nav a {
+            color: #4b5563;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
 
-.primary-nav a {
-    color: #4b5563;
-    padding: 0.75rem 1rem;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
+        .primary-nav a:hover,
+        .secondary-nav a:hover {
+            background-color: #edf2f7;
+            color: #1f2937;
+        }
 
-.primary-nav a:hover {
-    background-color: #edf2f7;
-    color: #1f2937;
-}
+        .secondary-nav a {
+            background-color: #3b82f6;
+            color: #fff;
+            border-radius: 0.375rem;
+        }
 
-.secondary-nav a {
-    background-color: #3b82f6;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
+        .secondary-nav a:hover {
+            background-color: #2563eb;
+        }
 
-.secondary-nav a:hover {
-    background-color: #2563eb;
-}
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-table {
-    width: 100%;
-    /* border-collapse: collapse; */
-    margin-top: 2rem;
-}
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
 
-th,
-td {
-    border-bottom: 1px solid #dddddd2f;
-    padding: 10px;
-    text-align: left;
-}
+        table {
+            width: 100%;
+            margin-top: 1rem;
+        }
 
-th {
-    background-color: #aaaaaa48;
-}
+        th,
+        td {
+            padding: 0.75rem;
+            text-align: left;
+        }
 
-.button {
-    display: inline-block;
-    background-color: dodgerblue;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    border-radius: 5px;
-    margin-top: 1rem;
-}
+        th {
+            background-color: #f1f1f1;
+            border-bottom: 2px solid #dee2e6;
+        }
 
-.button:hover {
-    text-decoration: none;
-    color: #fff
-}
+        td {
+            border-bottom: 1px solid #dee2e6;
+        }
 
-.head {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-}
+        .text-center {
+            text-align: center;
+        }
 
-.update {
-    padding: 10px 20px;
-    background: green;
-    border-radius: 10px;
-    color: #fff;
-}
-
-.delete {
-    padding: 10px 20px;
-    background: red;
-    border-radius: 10px;
-    color: #fff;
-}
-
-.import {
-    padding: 10px 20px;
-    background: dodgerblue;
-    border-radius: 10px;
-    color: #fff;
-}
-
-.delete:hover,
-.update:hover,
-.import:hover {
-    text-decoration: none;
-    color: #fff;
-}
+        .font-weight-bold {
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
-
     <nav class="navbar">
         <div class="navbar-inner">
             <div class="logo">
@@ -238,23 +154,25 @@ th {
         <div class="head">
             <h2>Products</h2>
             <a href="./addproduct.php" class="btn btn-info">Add New Product</a>
-
         </div>
 
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Product ID</th>
+                    <th>#</th>
                     <th>Product Name</th>
-                    <th>Actions</th>
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <?php echo $tbody ?>
+                <?php echo $tbody; ?>
             </tbody>
         </table>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2LcX9hYj6Dew/3Cqu5d5GEn5e2snJp4YLnf2gyR6E7" crossorigin="anonymous">
+        </script>
 </body>
 
 </html>

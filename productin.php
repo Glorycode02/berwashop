@@ -1,4 +1,5 @@
 <?php
+include_once "./auth/config.php";
 $conn = mysqli_connect("localhost", "root", "", "berwashop");
 
 $select = mysqli_query($conn, "SELECT * FROM productin");
@@ -46,30 +47,36 @@ if ($select) {
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 2rem;
+            margin-top: 20px;
         }
 
         th,
         td {
             padding: 15px;
             text-align: left;
+            border-bottom: 1px solid #ddd;
         }
 
         th {
             background-color: #f2f2f2;
         }
 
-        .import {
-            padding: 10px 20px;
-            background: dodgerblue;
-            border-radius: 10px;
-            color: #fff;
+        .text-center {
+            text-align: center;
         }
 
-        .import:hover {
-            text-decoration: none;
+        .import-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: dodgerblue;
+            border-radius: 5px;
             color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
 
+        .import-btn:hover {
+            background-color: darkblue;
         }
     </style>
 </head>

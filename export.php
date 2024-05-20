@@ -1,8 +1,8 @@
 <?php
+include_once "./auth/config.php";
 $conn = mysqli_connect("localhost", "root", "", "berwashop");
 
 $code = $_GET['ProductCode'];
-
 
 $select = mysqli_query($conn, "SELECT * FROM product WHERE `ProductCode` = $code");
 $fetch = mysqli_fetch_assoc($select);
@@ -12,135 +12,115 @@ $fetch2 = mysqli_fetch_assoc($select2);
 
 $form = '
 <div class="container">
-        <form action="" method="POST">
-            <h1>Berwa shop</h1>
-            <p>Export your products from the store</p>
-            <div class="div1">
-                <label>Product Id</label>
-                <input type="text" placeholder="Product Id" name="pid" value="' . $fetch['ProductCode'] . '" disabled>
-            </div>
-            <div class="div2">
-                <label>Product name</label>
-                <input type="text" placeholder="Product name" name="pname" value="' . $fetch['ProductName'] . '" disabled>
-            </div>
-            <div class="div2">
-                <label>Date</label>
-                <input type="date" placeholder="Date" name="date">
-            </div>
-            <div class="div2">
-                <label>Quantity</label>
-                <input type="text" placeholder="Quantity" name="quant" value="' . $fetch2['Quantity'] . '">
-            </div>
-            <div class="submit">
-                <input type="submit" value="Export product" name="export" class="login">
-            </div>
-            <div class="link">
-                <p><a href="./productout.php">Back to productout</a></p>
-            </div>
-        </form>
-    </div>
+    <form action="" method="POST">
+        <h1>Berwa Shop</h1>
+        <p>Export your products from the store</p>
+        <div class="form-group">
+            <label for="pid">Product Id</label>
+            <input type="text" id="pid" class="form-control" placeholder="Product Id" name="pid" value="' . $fetch['ProductCode'] . '" disabled>
+        </div>
+        <div class="form-group">
+            <label for="pname">Product Name</label>
+            <input type="text" id="pname" class="form-control" placeholder="Product Name" name="pname" value="' . $fetch['ProductName'] . '" disabled>
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" class="form-control" placeholder="Date" name="date">
+        </div>
+        <div class="form-group">
+            <label for="quant">Quantity</label>
+            <input type="text" id="quant" class="form-control" placeholder="Quantity" name="quant" value="' . $fetch2['Quantity'] . '">
+        </div>
+        <div class="form-group text-center">
+            <button type="submit" name="export" class="btn btn-primary">Export Product</button>
+        </div>
+        <div class="text-center">
+            <a href="./productout.php" class="btn btn-link">Back to Product Out</a>
+        </div>
+    </form>
+</div>
 ';
 
 if (isset($_POST['export'])) {
     $date = $_POST['date'];
-    $quantity = $_POST['quant'];
+    $quantity = $fetch2['Quantity'] - $_POST['quant'];
     $total = $quantity * $unit;
 
-    $export = mysqli_query($conn, "UPDATE productin SET `TotalPrice`= $total,`ProductCode` = $code WHERE `ProductCode` = $code");
-    $insert = mysqli_query($conn, "INSERT INTO productout VALUES('$date','$quantity','$total','$code') ");
-    if ($export) {
-        echo "Exported successfully";
+    $export = mysqli_query($conn, "UPDATE productin SET `TotalPrice`= $total, `ProductCode` = $code WHERE `ProductCode` = $code");
+    $insert = mysqli_query($conn, "INSERT INTO productout (`Date`, `Quantity`, `TotalPrice`, `ProductCode`) VALUES ('$date', '$quantity', '$total', '$code')");
+    if ($export && $insert) {
+        echo "<div class='alert alert-success text-center'>Exported successfully</div>";
     } else {
-        echo "Not exported";
+        echo "<div class='alert alert-danger text-center'>Not exported</div>";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Export</title>
+    <title>Export Product - Berwa Shop</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <style>
         body {
-            font-family: system-ui;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
         .container {
-            width: 400px;
-            margin: 50px auto;
+            max-width: 500px;
+            width: 100%;
             padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             text-align: center;
+            margin-bottom: 1rem;
+            color: #333;
         }
 
         p {
             text-align: center;
-            margin-top: 10px;
+            margin-bottom: 1rem;
+            color: #555;
         }
 
-        .div1 {
-            margin-top: 20px;
+        .form-group {
+            margin-bottom: 1.5rem;
         }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
+        .form-control {
+            border-radius: 4px;
         }
 
-        input[type="text"] {
+        .btn-primary {
             width: 100%;
             padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-            box-sizing: border-box;
+            border-radius: 4px;
         }
 
-        input[type="date"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-
-        .submit {
+        .text-center {
             text-align: center;
-            margin-top: 20px;
         }
 
-        .login {
-            background-color: dodgerblue;
-            width: 100%;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .link {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .link a {
+        .btn-link {
+            color: #007bff;
             text-decoration: none;
-            color: #333;
+        }
+
+        .btn-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
